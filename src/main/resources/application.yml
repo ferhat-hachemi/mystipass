@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: mystipass
+
+  shell:
+    interactive:
+      enabled: true
+
