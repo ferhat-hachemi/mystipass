@@ -1,8 +1,13 @@
 spring:
   application:
     name: mystipass
-
   shell:
     interactive:
       enabled: true
+  main:
+    banner-mode: off
+
+logging:
+  level:
+    root: off
 
