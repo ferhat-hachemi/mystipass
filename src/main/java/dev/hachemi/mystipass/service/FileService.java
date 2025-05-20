@@ -41,7 +41,7 @@ public class FileService {
                     FileWriter fw = new FileWriter(file, true);
                     BufferedWriter writer = new BufferedWriter(fw)
             ) {
-                writer.write(mystipass.toString());
+                writer.append(mystipass.toString());
                 return String.format("Entry added successfully for %s.", mystipass.getKey());
             } catch (IOException e) {
                 return WRITE_ERROR;

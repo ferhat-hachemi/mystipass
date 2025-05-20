@@ -17,6 +17,6 @@ public class Mystipass {
 
     @Override
     public String toString() {
-        return key + ":" + username + ":" + password;
+        return key + ":" + username + ":" + password + '\n';
     }
 }
