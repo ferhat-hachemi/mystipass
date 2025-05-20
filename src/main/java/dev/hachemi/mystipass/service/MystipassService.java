@@ -5,7 +5,7 @@ public interface MystipassService {
     /**
      * Initializes the credential storage or any required setup.
      */
-    void init();
+    String init();
 
     /**
      * Adds a new credential entry with the given key, username, and password.
@@ -13,7 +13,7 @@ public interface MystipassService {
      * @param username
      * @param password
      */
-    void add(String key, String username, String password);
+    String add(String key, String username, String password);
 
     /**
      * Lists all stored entries

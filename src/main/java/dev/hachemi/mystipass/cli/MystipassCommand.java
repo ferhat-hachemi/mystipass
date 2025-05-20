@@ -1,27 +1,32 @@
 package dev.hachemi.mystipass.cli;
 
+import dev.hachemi.mystipass.service.MystipassService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.command.annotation.Option;
 import org.springframework.shell.context.InteractionMode;
 
 @Command
+@RequiredArgsConstructor
 public class MystipassCommand {
 
-    @Command(command = "init", description = "Initialize Mystipass for first-time use", interactionMode = InteractionMode.ALL)
-    public void init() {
-        // TODO
+    private final MystipassService service;
+
+    @Command(command = "init", description = "Initialize cli for first-time use", interactionMode = InteractionMode.ALL)
+    public String init() {
+        return service.init();
     }
 
-    @Command(command = "add", description = "Store a new password entry with its associated key and username", interactionMode =  InteractionMode.ALL)
-    public void add(
+    @Command(command = "add", description = "Store a new password entry with its associated key and username", interactionMode = InteractionMode.ALL)
+    public String add(
             @Option(description = "A unique key to identify this password entry", shortNames = 'k', longNames = "key", required = true) String key,
             @Option(description = "The username or email linked to this entry", shortNames = 'u', longNames = "username", required = true) String username,
             @Option(description = "The password you want to securely store", shortNames = 'p', longNames = "password", required = true) String password
     ) {
-       // TODO
+        return service.add(key, username, password);
     }
 
-    @Command(description = "Display all stored password entries", interactionMode =  InteractionMode.NONINTERACTIVE)
+    @Command(description = "Display all stored password entries", interactionMode = InteractionMode.NONINTERACTIVE)
     public void list() {
         // TODO
     }
