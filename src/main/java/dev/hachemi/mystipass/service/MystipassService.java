@@ -18,5 +18,12 @@ public interface MystipassService {
     /**
      * Lists all stored entries
      */
-    void list();
+    String list();
+
+    /**
+     * Retreive entires with the given key
+     * @param key
+     * @return
+     */
+    String get(String key);
 }

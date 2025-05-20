@@ -3,10 +3,8 @@ package dev.hachemi.mystipass.service;
 import dev.hachemi.mystipass.model.Mystipass;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.stream.Collectors;
 
 import static dev.hachemi.mystipass.util.Constant.*;
 
@@ -45,6 +43,40 @@ public class FileService {
                 return String.format("Entry added successfully for %s.", mystipass.getKey());
             } catch (IOException e) {
                 return WRITE_ERROR;
+            }
+        } else {
+            return SHOULD_INIT;
+        }
+    }
+
+    public String readLines() {
+        File file = new File(CREDENTIALS_FILE_PATH);
+        if (file.exists()) {
+            try (
+                    FileReader fr = new FileReader(file);
+                    BufferedReader writer = new BufferedReader(fr)
+            ) {
+                return writer.lines().collect(Collectors.joining("\n"));
+            } catch (IOException e) {
+                return READ_ERROR;
+            }
+        } else {
+            return SHOULD_INIT;
+        }
+    }
+
+    public String read(String key) {
+        File file = new File(CREDENTIALS_FILE_PATH);
+        if (file.exists()) {
+            try (
+                    FileReader fr = new FileReader(file);
+                    BufferedReader writer = new BufferedReader(fr)
+            ) {
+                String all = writer.lines().filter(line -> line.split(":")[0].equals(key)).findFirst().orElse(NO_ENTRY);
+                if(all.isEmpty()) return NO_ENTRY;
+                return all;
+            } catch (IOException e) {
+                return READ_ERROR;
             }
         } else {
             return SHOULD_INIT;

@@ -27,7 +27,12 @@ public class MystipassServiceImpl implements MystipassService {
     }
 
     @Override
-    public void list() {
+    public String list() {
+        return service.readLines();
+    }
 
+    @Override
+    public String get(String key) {
+        return service.read(key);
     }
 }

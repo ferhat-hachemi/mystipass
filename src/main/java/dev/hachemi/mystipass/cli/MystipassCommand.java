@@ -26,8 +26,13 @@ public class MystipassCommand {
         return service.add(key, username, password);
     }
 
-    @Command(description = "Display all stored password entries", interactionMode = InteractionMode.NONINTERACTIVE)
-    public void list() {
-        // TODO
+    @Command(command = "list", description = "Display all stored password entries", interactionMode = InteractionMode.ALL)
+    public String list() {
+        return service.list();
+    }
+
+    @Command(command = "get", description = "Retrieve a specific password entry by its unique key.", interactionMode = InteractionMode.ALL)
+    public String get(@Option(description = "The key used to identify the password entry", shortNames = 'k', longNames = "key", required = true) String key) {
+        return service.get(key);
     }
 }
