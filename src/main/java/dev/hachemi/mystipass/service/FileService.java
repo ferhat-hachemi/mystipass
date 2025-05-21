@@ -33,6 +33,9 @@ public class FileService {
     }
 
     public String write(Mystipass mystipass) {
+        if (!findEntryByKey(mystipass.getKey()).isEmpty()) {
+            return KEY_ENTRY_ALREADY_EXISTS;
+        }
         File file = new File(CREDENTIALS_FILE_PATH);
         if (file.exists()) {
             try (
@@ -73,13 +76,25 @@ public class FileService {
                     BufferedReader writer = new BufferedReader(fr)
             ) {
                 String all = writer.lines().filter(line -> line.split(":")[0].equals(key)).findFirst().orElse(NO_ENTRY);
-                if(all.isEmpty()) return NO_ENTRY;
+                if (all.isEmpty()) return NO_ENTRY;
                 return all;
             } catch (IOException e) {
                 return READ_ERROR;
             }
         } else {
             return SHOULD_INIT;
+        }
+    }
+
+    private String findEntryByKey(String key) {
+        File file = new File(CREDENTIALS_FILE_PATH);
+        try (
+                FileReader fr = new FileReader(file);
+                BufferedReader writer = new BufferedReader(fr)
+        ) {
+            return writer.lines().filter(line -> line.split(":")[0].equals(key)).findFirst().orElse("");
+        } catch (IOException e) {
+            return READ_ERROR;
         }
     }
 }

@@ -14,4 +14,5 @@ public class Constant {
     public static final String SHOULD_INIT = "Please use the 'init' command to initialize the cli structure!";
     public static final String READ_ERROR = "An error occurred while reading entries.";
     public static final String NO_ENTRY = "No entry found for the given key.";
+    public static final String KEY_ENTRY_ALREADY_EXISTS = "An entry with that key already exists.";
 }
