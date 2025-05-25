@@ -4,6 +4,15 @@ spring:
   shell:
     interactive:
       enabled: false
+    command:
+      script:
+        enabled: false
+      quit:
+        enabled: false
+      history:
+        enabled: false
+      stacktrace:
+        enabled: false
   main:
     banner-mode: off
 
