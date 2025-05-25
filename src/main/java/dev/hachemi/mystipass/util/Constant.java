@@ -20,10 +20,10 @@ public class Constant {
     public static final String CRYPTO_ALGORITHM = "AES";
     public static final String KEY_DERIVATION_ALGORITHM = "PBKDF2WithHmacSHA256";
     public static final String MASTER_PASSWORD = "The master password is incorrect. Please try again";
-    public static final String ENTRY_ADDED =  "✅ Password entry for key '%s' added successfully.";
+    public static final String ENTRY_ADDED =  "✅  Password entry for '%s' added successfully.";
     public static final String ENTRY =
             """
-            ✅ Password entry
+            ✅  Password entry
             -------------------------------------------------------------------------------
             """;
     public static final String ENTRIES =
