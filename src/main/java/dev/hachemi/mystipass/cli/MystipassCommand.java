@@ -4,7 +4,6 @@ import dev.hachemi.mystipass.service.MystipassService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.command.annotation.Option;
-import org.springframework.shell.context.InteractionMode;
 
 import java.io.Console;
 
@@ -14,17 +13,16 @@ public class MystipassCommand {
 
     private final MystipassService service;
 
-    @Command(command = "init", description = "Initialize cli for first-time use", interactionMode = InteractionMode.ALL)
+    @Command(command = "init", description = "Initialize cli for first-time use")
     public String init() {
         System.out.print("Enter master password: ");
         Console console = System.console();
         var read = console.readPassword();
         String master = new String(read);
-        System.out.print("Password is: " + master);
         return service.init(master);
     }
 
-    @Command(command = "add", description = "Store a new password entry with its associated key and username", interactionMode = InteractionMode.ALL)
+    @Command(command = "add", description = "Store a new password entry with its associated key and username")
     public String add(
             @Option(description = "A unique key to identify this password entry", shortNames = 'k', longNames = "key", required = true) String key,
             @Option(description = "The username or email linked to this entry", shortNames = 'u', longNames = "username", required = true) String username,
@@ -37,7 +35,7 @@ public class MystipassCommand {
         return service.add(key, username, password, master);
     }
 
-    @Command(command = "list", description = "Display all stored password entries", interactionMode = InteractionMode.ALL)
+    @Command(command = "list", description = "Display all stored password entries")
     public String list() {
         System.out.print("Enter master password: ");
         Console console = System.console();
@@ -46,7 +44,7 @@ public class MystipassCommand {
         return service.list(master);
     }
 
-    @Command(command = "get", description = "Retrieve a specific password entry by its unique key.", interactionMode = InteractionMode.ALL)
+    @Command(command = "get", description = "Retrieve a specific password entry by its unique key.")
     public String get(@Option(description = "The key used to identify the password entry", shortNames = 'k', longNames = "key", required = true) String key) {
         System.out.print("Enter master password: ");
         Console console = System.console();
