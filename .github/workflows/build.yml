@@ -1,0 +1,27 @@
+name: Build CI
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - src/**
+      - .github/workflows/**
+
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v4
+
+      - name: Build application
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: graalvm
+
+      - run: mvn package -DskipTests
