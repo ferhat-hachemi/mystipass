@@ -19,10 +19,8 @@ import static dev.hachemi.mystipass.util.Constant.KEY_DERIVATION_ALGORITHM;
 public class EncryptionEngine {
 
     public String encrypt(String plainText, String master) {
-        var salt = PasswordHelper.readSalt();
-
         String encoded = "";
-        SecretKey secretKey = new SecretKeySpec(deriveKey(master, salt), CRYPTO_ALGORITHM);
+        SecretKey secretKey = new SecretKeySpec(deriveKey(master), CRYPTO_ALGORITHM);
         try {
             Cipher cipher = Cipher.getInstance(CRYPTO_ALGORITHM);
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
@@ -36,10 +34,8 @@ public class EncryptionEngine {
     }
 
     public String decrypt(String encrypted, String master) {
-        var salt = PasswordHelper.readSalt();
-
         String plainText = "";
-        SecretKey secretKey = new SecretKeySpec(deriveKey(master, salt), CRYPTO_ALGORITHM);
+        SecretKey secretKey = new SecretKeySpec(deriveKey(master), CRYPTO_ALGORITHM);
         try {
             Cipher cipher = Cipher.getInstance(CRYPTO_ALGORITHM);
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
@@ -53,7 +49,8 @@ public class EncryptionEngine {
         return plainText;
     }
 
-    public byte[] deriveKey(String password, String salt) {
+    public byte[] deriveKey(String password) {
+        var salt = PasswordHelper.readSalt();
         try {
             SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(KEY_DERIVATION_ALGORITHM);
             KeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 65536, 256);

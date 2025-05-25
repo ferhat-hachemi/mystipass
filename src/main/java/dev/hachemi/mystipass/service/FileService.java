@@ -1,13 +1,13 @@
 package dev.hachemi.mystipass.service;
 
 import dev.hachemi.mystipass.model.Mystipass;
+import dev.hachemi.mystipass.security.PasswordHelper;
 import dev.hachemi.mystipass.util.FileUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +26,7 @@ public class FileService {
         File dir = new File(MYSTIPASS_HIDDEN_FOLDER);
         File file = new File(CREDENTIALS_FILE);
         File config = new File(CONFIG_FILE);
-        var salt = new Timestamp(System.currentTimeMillis()).getTime();
+        var salt = PasswordHelper.generateSalt();
         try {
             boolean dirCreated = dir.mkdir();
             boolean fileCreated = file.createNewFile();

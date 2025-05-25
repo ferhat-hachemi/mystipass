@@ -4,11 +4,18 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.SecureRandom;
 
 import static dev.hachemi.mystipass.util.Constant.CONFIG_FILE;
 import static dev.hachemi.mystipass.util.Constant.READ_ERROR;
 
 public class PasswordHelper {
+
+
+    public static long generateSalt() {
+        SecureRandom secureRandom = new SecureRandom();
+        return secureRandom.nextLong();
+    }
 
     public static String readHash() {
         return readConfig().split(":")[0];
@@ -19,6 +26,7 @@ public class PasswordHelper {
     }
 
     private static String readConfig() {
+
         File file = new File(CONFIG_FILE);
         try {
             FileReader fr = new FileReader(file);
