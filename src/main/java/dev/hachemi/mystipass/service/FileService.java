@@ -1,104 +1,75 @@
 package dev.hachemi.mystipass.service;
 
 import dev.hachemi.mystipass.model.Mystipass;
+import dev.hachemi.mystipass.util.FileUtils;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.util.stream.Collectors;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Optional;
 
 import static dev.hachemi.mystipass.util.Constant.*;
 
 @Service
+@RequiredArgsConstructor
 public class FileService {
 
-    public String init() {
-        File dir = new File(MYSTIPASS_HIDDEN_FOLDER);
-        File file = new File(CREDENTIALS_FILE_PATH);
+    private final PasswordEncoder encoder;
 
+    public String init(String password) {
+        if (FileUtils.initialized()) {
+            return INIT_ALREADY_EXISTS;
+        }
+        File dir = new File(MYSTIPASS_HIDDEN_FOLDER);
+        File file = new File(CREDENTIALS_FILE);
+        File config = new File(CONFIG_FILE);
+        var salt = new Timestamp(System.currentTimeMillis()).getTime();
         try {
-            if (file.exists() && dir.exists()) {
-                return INIT_ALREADY_EXISTS;
-            }
             boolean dirCreated = dir.mkdir();
             boolean fileCreated = file.createNewFile();
+            boolean configCreated = config.createNewFile();
 
-            if (dirCreated && fileCreated) {
+            if (dirCreated && fileCreated && configCreated) {
+                FileWriter fw = new FileWriter(config, true);
+                BufferedWriter writer = new BufferedWriter(fw);
+                writer.append(encoder.encode(password).concat(":").concat(String.valueOf(salt)));
+                writer.close();
                 return INIT_SUCCESS;
             } else {
                 return INIT_ERROR;
             }
         } catch (IOException e) {
-            return INIT_FILE_EXCEPTION;
+            return EXCEPTION;
         }
     }
 
-    public String write(Mystipass mystipass) {
-        if (!findEntryByKey(mystipass.getKey()).isEmpty()) {
-            return KEY_ENTRY_ALREADY_EXISTS;
-        }
-        return writeToFile(mystipass.toString(), CREDENTIALS_FILE_PATH, String.format("Entry added successfully for %s.", mystipass.getKey()));
+    public String write(Mystipass mystipass) throws IOException {
+        File file = new File(CREDENTIALS_FILE);
+        FileWriter fw = new FileWriter(file, true);
+        BufferedWriter writer = new BufferedWriter(fw);
+        writer.append(mystipass.toString());
+        writer.close();
+        return String.format(ENTRY_ADDED, mystipass.getKey());
     }
 
-    public String readLines() {
-        File file = new File(CREDENTIALS_FILE_PATH);
-        if (file.exists()) {
-            try (
-                    FileReader fr = new FileReader(file);
-                    BufferedReader writer = new BufferedReader(fr)
-            ) {
-                return writer.lines().collect(Collectors.joining("\n"));
-            } catch (IOException e) {
-                return READ_ERROR;
-            }
-        } else {
-            return SHOULD_INIT;
-        }
+    public List<String> readLines() throws IOException {
+        File file = new File(CREDENTIALS_FILE);
+        FileReader fr = new FileReader(file);
+        BufferedReader writer = new BufferedReader(fr);
+        return writer.lines().toList();
     }
 
-    public String read(String key) {
-        File file = new File(CREDENTIALS_FILE_PATH);
-        if (file.exists()) {
-            try (
-                    FileReader fr = new FileReader(file);
-                    BufferedReader writer = new BufferedReader(fr)
-            ) {
-                String all = writer.lines().filter(line -> line.split(":")[0].equals(key)).findFirst().orElse(NO_ENTRY);
-                if (all.isEmpty()) return NO_ENTRY;
-                return all;
-            } catch (IOException e) {
-                return READ_ERROR;
-            }
-        } else {
-            return SHOULD_INIT;
-        }
+    public Optional<String> read(String key) throws IOException {
+        File file = new File(CREDENTIALS_FILE);
+        FileReader fr = new FileReader(file);
+        BufferedReader writer = new BufferedReader(fr);
+        return writer.lines().filter(line -> line.split(":")[0].equals(key)).findFirst();
     }
 
-    private String findEntryByKey(String key) {
-        File file = new File(CREDENTIALS_FILE_PATH);
-        try (
-                FileReader fr = new FileReader(file);
-                BufferedReader writer = new BufferedReader(fr)
-        ) {
-            return writer.lines().filter(line -> line.split(":")[0].equals(key)).findFirst().orElse("");
-        } catch (IOException e) {
-            return READ_ERROR;
-        }
-    }
-
-    private String writeToFile(String content, String filePath, String message) {
-        File file = new File(filePath);
-        if (file.exists()) {
-            try (
-                    FileWriter fw = new FileWriter(file, true);
-                    BufferedWriter writer = new BufferedWriter(fw)
-            ) {
-                writer.append(content);
-                return message;
-            } catch (IOException e) {
-                return WRITE_ERROR;
-            }
-        } else {
-            return SHOULD_INIT;
-        }
+    public boolean keyAlreadyExists(String key) throws IOException {
+        return read(key).isPresent();
     }
 }
