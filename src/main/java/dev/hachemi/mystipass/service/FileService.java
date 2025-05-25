@@ -8,6 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +38,8 @@ public class FileService {
                 FileWriter fw = new FileWriter(config, true);
                 BufferedWriter writer = new BufferedWriter(fw);
                 writer.append(encoder.encode(password).concat(":").concat(String.valueOf(salt)));
+                Files.setPosixFilePermissions(file.toPath(), PosixFilePermissions.fromString(PERMISSIONS));
+                Files.setPosixFilePermissions(config.toPath(), PosixFilePermissions.fromString(PERMISSIONS));
                 writer.close();
                 return INIT_SUCCESS;
             } else {

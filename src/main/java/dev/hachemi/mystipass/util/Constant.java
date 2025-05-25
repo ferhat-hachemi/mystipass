@@ -7,6 +7,7 @@ public class Constant {
     public static final String MYSTIPASS_HIDDEN_FOLDER = USER_WORKING_DIRECTORY + File.separator + ".mystipass";
     public static final String CREDENTIALS_FILE = MYSTIPASS_HIDDEN_FOLDER + File.separator + "credentials";
     public static final String CONFIG_FILE = MYSTIPASS_HIDDEN_FOLDER + File.separator + "mystipass.conf";
+    public static final String PERMISSIONS = "rw-------";
     public static final String INIT_ALREADY_EXISTS = "MystiPass structure is already initialized.";
     public static final String INIT_SUCCESS = "MystiPass structure initialized successfully.";
     public static final String INIT_ERROR = "Failed to create the MystiPass structure.";
