@@ -5,11 +5,12 @@ import dev.hachemi.mystipass.model.Mystipass;
 public class MystipassBuilder {
 
     public static Mystipass build(String line) {
+        var parts = line.split(":");
         return Mystipass
                 .builder()
-                .key(line.split(":")[0])
-                .username(line.split(":")[1])
-                .password(line.split(":")[2])
+                .key(parts[0])
+                .username(parts[1])
+                .password(parts[2])
                 .build();
     }
 }
