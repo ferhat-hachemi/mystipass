@@ -2,7 +2,7 @@ package dev.hachemi.mystipass.service;
 
 import dev.hachemi.mystipass.model.Mystipass;
 import dev.hachemi.mystipass.security.PasswordHelper;
-import dev.hachemi.mystipass.util.FileUtils;
+import dev.hachemi.mystipass.util.InitializationChecker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class FileService {
     private final PasswordEncoder encoder;
 
     public String init(String password) {
-        if (FileUtils.initialized()) {
+        if (InitializationChecker.initialized()) {
             return INIT_ALREADY_EXISTS;
         }
         File dir = new File(MYSTIPASS_HIDDEN_FOLDER);

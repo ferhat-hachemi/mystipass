@@ -3,7 +3,7 @@ package dev.hachemi.mystipass.service;
 import dev.hachemi.mystipass.model.Mystipass;
 import dev.hachemi.mystipass.security.EncryptionEngine;
 import dev.hachemi.mystipass.security.PasswordHelper;
-import dev.hachemi.mystipass.util.FileUtils;
+import dev.hachemi.mystipass.util.InitializationChecker;
 import dev.hachemi.mystipass.util.MystipassBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,7 +29,7 @@ public class MystipassServiceImpl implements MystipassService {
 
     @Override
     public String add(String key, String username, String password, String master) {
-        if (!FileUtils.initialized()) {
+        if (!InitializationChecker.initialized()) {
             return SHOULD_INIT;
         }
         if (!encoder.matches(master, PasswordHelper.readHash())) {
@@ -60,7 +60,7 @@ public class MystipassServiceImpl implements MystipassService {
 
     @Override
     public String list(String master) {
-        if (!FileUtils.initialized()) {
+        if (!InitializationChecker.initialized()) {
             return SHOULD_INIT;
         }
         if (!encoder.matches(master, PasswordHelper.readHash())) {
@@ -78,7 +78,7 @@ public class MystipassServiceImpl implements MystipassService {
 
     @Override
     public String get(String key, String master) {
-        if (!FileUtils.initialized()) {
+        if (!InitializationChecker.initialized()) {
             return SHOULD_INIT;
         }
         if (!encoder.matches(master, PasswordHelper.readHash())) {

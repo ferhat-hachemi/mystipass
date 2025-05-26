@@ -5,7 +5,7 @@ import java.io.File;
 import static dev.hachemi.mystipass.util.Constant.CONFIG_FILE;
 import static dev.hachemi.mystipass.util.Constant.CREDENTIALS_FILE;
 
-public class FileUtils {
+public class InitializationChecker {
 
     public static boolean initialized() {
         File config = new File(CONFIG_FILE);
