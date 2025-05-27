@@ -13,6 +13,9 @@ spring:
         enabled: false
       stacktrace:
         enabled: false
+      help:
+        command-template: classpath:template/command-help.stg
+        commands-template: classpath:template/commands-help.stg
   main:
     banner-mode: off
 

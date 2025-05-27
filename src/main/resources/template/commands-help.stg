@@ -1,0 +1,32 @@
+// NAME
+name(cliName, cliDescription) ::= <<
+🔐 mystipass 🔐
+   A secure command-line password manager.
+>>
+
+// USAGE
+usage(cliName) ::= <<
+🚀 Usage:
+   passman [command] [options]
+>>
+
+// COMMANDS
+command(command) ::= <<
+    ➤ <command.name> - <command.description>
+      <if(command.hasNext)>\n<endif>
+>>
+
+commands(commandsList) ::= <<
+📜 Available Commands:
+<commandsList: { c | <command(c)>}>
+>>
+
+// MAIN TEMPLATE
+main(model) ::= <<
+<name(model.cliName, model.cliDescription)>
+
+<usage(model.cliName)>
+
+<commands(model.commands)>
+
+>>
