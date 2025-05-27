@@ -1,9 +1,8 @@
 # 🔐 Mystipass
 
-**Mystipass** is a simple and secure command-line password manager written in Java using Spring Shell.  
+**mystipass** is a simple and secure command-line password manager written in Java using Spring Shell.  
 Store, retrieve, and manage your credentials locally with encryption.
 
-> 🛠 Built with **[GraalVM Native Image](https://www.graalvm.org/)** for optimal performance and near-instant startup.
 
 ## 🚀 Features
 - 🗂 Local filesystem storage — all data is stored in your home directory
@@ -12,9 +11,9 @@ Store, retrieve, and manage your credentials locally with encryption.
 
 - 🧪 Master password protection — secure access with a bcrypt-hashed master password
 
-- 💻 Built-in interactive CLI — navigate with user-friendly commands
+- 💻 Simple and user-friendly CLI — execute commands easily from your terminal
 
-- ⚡ Fast startup time — compiled to a native binary using GraalVM for lightning-fast CLI performance
+- ⚡ Fast startup time — compiled to a native binary using **[GraalVM Native Image](https://www.graalvm.org/)** for lightning-fast CLI performance
 
 - 🐧 Packaged as `.deb` — easily installable on Debian-based systems
 
@@ -37,9 +36,19 @@ Store, retrieve, and manage your credentials locally with encryption.
   mystipass get --key <key>
 ```
 
-- List all saved credentials
+- 📋 List all saved credentials
 ```bash 
   mystipass list
+```
+
+- 🆘 Display help about available commands
+```bash 
+  mystipass help
+```
+
+- 🔢 Display Version
+```bash 
+  mystipass version
 ```
 
 ## 📦 Installation
@@ -53,10 +62,16 @@ Store, retrieve, and manage your credentials locally with encryption.
 ## 🛠 Initialization
 
 After installation, you must run the `init` command to set up the necessary files and configuration:
+ 
+- 🔐 You will be prompted to set a master password, which is securely hashed using bcrypt and stored in the config file for authentication purposes: `/home/<your-username>/.mystipass/mystipass.conf`.
 
-- 🔐 You will be prompted to set a master password, which will be securely stored with a salt in: `/home/<your-username>/.mystipass/mystipass.conf`
+- 🧂 A random cryptographic salt is generated and stored in the config file.
 
-- 📄 Creates the encrypted credentials file: `/home/<your-username>/.mystipass/credentials` — where all your password entries are securely stored
+- 🔑 The salt is used to derive a symmetric encryption key from your master password, using a secure key derivation function (PBKDF2).
+
+> 🧠 This key is not stored — it is re-derived every time you use mystipass.
+
+- 📄 The derived key is then used to encrypt/decrypt your credentials, which are securely stored in: `/home/<your-username>/.mystipass/credentials`.
 
 > 🔗 The mystipass executable is globally available at `/usr/local/bin/mystipass`, so you can run it from anywhere in your terminal.
 
