@@ -1,5 +1,7 @@
 # 🔐 Mystipass
 
+###### 🚧  This project is currently under active development. Features and functionality may change as it evolves.
+
 **mystipass** is a simple and secure command-line password manager written in Java using Spring Shell.  
 Store, retrieve, and manage your credentials locally with encryption.
 
