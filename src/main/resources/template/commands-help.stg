@@ -7,7 +7,7 @@ name(cliName, cliDescription) ::= <<
 // USAGE
 usage(cliName) ::= <<
 🚀 Usage:
-   passman [command] [options]
+   mystipass [command] [options]
 >>
 
 // COMMANDS
